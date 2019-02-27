@@ -22,7 +22,7 @@ namespace BadCodeTestApp
             Commands.Add(new Delete());
             Commands.Add(new Create());
         }
-
+//возможно стоит вынести регистрацию компонетов в отдельный клас. И там создать механизм который это будет делать более независимо
         public static void Main(string[] args)
         {
             string command = args[0];
@@ -30,8 +30,11 @@ namespace BadCodeTestApp
             foreach (ICommand n in Commands)
             {
                 if (Regex.IsMatch(command, n.GetCommandPattern(), RegexOptions.IgnoreCase))
+                    //а что если у нас команда попадет под несколько паттернов? 
+                    //возможно стоит сделать отдельную операцию валидации или создать класс валидатор с набором правил.
+                    //как насчет использования фабрики?
                 {
-                    n.Execute(command, param);
+                    n.Execute(command, param); //я думаю есть смысл вообще отказатся от параметров, а передавать все в конструктор класа
                     break;
                 }
             }
